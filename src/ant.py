@@ -1,5 +1,5 @@
 
-
+from general import *
 
 
 class Ant:

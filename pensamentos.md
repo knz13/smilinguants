@@ -10,6 +10,8 @@
 
 * Por enquanto 2D
 
+* Quando entrar na tela de JOGO, você pode colocar a comida, o NEST das formigas e paredes
+
 
 # Desejos
 
