@@ -1,5 +1,5 @@
 from src.general import *
-
+from src.animated import *
 
 
 class Display:
@@ -9,21 +9,28 @@ class Display:
     __fill_color = (255,255,255)
     __current_screen = None
     __notifier = Events(["onMouseDown","onMouseUp","onKeyDown","onKeyUp"])
+    __delta = 0
+    __size = ()
+    
     def initialize(width=800,height=600) -> None:
         pygame.init()
         
         Display.__screen_var = pygame.display.set_mode((width, height))
-
+        Display.__size = (width,height)
 
         Display.__clock = pygame.time.Clock()
         
         while Display.__running:
+
+            for i in Animated.animated_list:
+                i.update(Display.__delta)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     Display.__running = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     Display.__notifier.onMouseDown(pygame.mouse.get_pos())
+
                 if event.type == pygame.MOUSEBUTTONUP:
                     Display.__notifier.onMouseUp(pygame.mouse.get_pos())
                 if event.type == pygame.KEYDOWN:
@@ -39,10 +46,13 @@ class Display:
 
             pygame.display.flip()
 
-            Display.__clock.tick(60)
+            Display.__delta = Display.__clock.tick(60)/1000
 
         
         pygame.quit()
+
+    def size():
+        return Display.__size
 
     def on_mouse_down(func):
         Display.__notifier.onMouseDown += func
