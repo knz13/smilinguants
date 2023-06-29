@@ -8,7 +8,7 @@ class Display:
     __running = True
     __fill_color = (255,255,255)
     __current_screen = None
-    __notifier = Events(["onMouseDown","onMouseUp","onKeyDown","onKeyUp"])
+    __notifier = Events(["onMouseDown","onMouseUp","onKeyDown","onKeyUp","onMouseMove"])
     __delta = 0
     __size = ()
     
@@ -37,6 +37,8 @@ class Display:
                     Display.__notifier.onKeyDown(event.key)
                 if event.type == pygame.KEYUP:
                     Display.__notifier.onKeyUp(event.key)
+                if event.type == pygame.MOUSEMOTION:
+                    Display.__notifier.onMouseMove(pygame.mouse.get_pos())
 
 
             Display.__screen_var.fill(Display.__fill_color)
@@ -53,6 +55,12 @@ class Display:
 
     def size():
         return Display.__size
+    
+    def on_mouse_move(func):
+        Display.__notifier.onMouseMove += func
+
+    def remove_on_mouse_move(func):
+        Display.__notifier.onMouseMove -= func
 
     def on_mouse_down(func):
         Display.__notifier.onMouseDown += func

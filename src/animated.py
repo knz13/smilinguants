@@ -18,117 +18,119 @@ class Animated:
     animated_list = []
 
     def __init__(self, value, duration=1,easing=Easing.easeInOutQuad) -> None:
-        self.value = value
-        self.__interpolating_value = value
-        self.__old_value = value
-        self.__duration = duration
-        self.__current_interp = 0
-        self.__easing = easing
+        self.__dict__["value"] = value
+        self._interpolating_value = value
+        self._old_value = value
+        self._duration = duration
+        self._current_interp = 0
+        self._easing = easing
 
         Animated.animated_list.append(self)
 
     def update(self, delta):
-        if self.__current_interp < 1:
-            self.__interpolating_value = self.__old_value + self.__easing(self.__current_interp) * (self.value - self.__old_value)
-            self.__current_interp += delta/self.__duration
+        if self._current_interp < 1:
+            self._interpolating_value = self._old_value + self._easing(self._current_interp) * (self.__dict__["value"] - self._old_value)
+            self._current_interp += delta/self._duration
         else:
-            self.__old_value = self.value
+            self._old_value = self.__dict__["value"]
 
-    def get_current(self):
-        return self.__interpolating_value
-    
-    def set_current(self, value):
-        self.__old_value = self.value
-        self.__current_interp = 0
-        self.value = value
+    @property
+    def value(self):
+        return self._interpolating_value
+
+    @value.setter
+    def value(self, value):
+        self._old_value = self._interpolating_value
+        self._current_interp = 0
+        self.__dict__["value"] = value
     
     def __add__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value + other.get_current()
+            return self.value + other.value
         else:
-            return self.__interpolating_value + other
+            return self.value + other
 
     def __iadd__(self, other):
         if isinstance(other, Animated):
-            self.set_current(self.value + other.get_current())
+            self.value += other.value
         else:
-            self.set_current(self.value + other)
+            self.value += other
         return self
 
     def __sub__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value - other.get_current()
+            return self.value - other.value
         else:
-            return self.__interpolating_value - other
+            return self.value - other
 
     def __isub__(self, other):
         if isinstance(other, Animated):
-            self.set_current(self.value - other.get_current())
+            self.value -= other.value
         else:
-            self.set_current(self.value - other)
+            self.value -= other
         return self
 
     def __mul__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value * other.get_current()
+            return self.value * other.value
         else:
-            return self.__interpolating_value * other
+            return self.value * other
 
     def __imul__(self, other):
         if isinstance(other, Animated):
-            self.set_current(self.value * other.get_current())
+            self.value *= other.value
         else:
-            self.set_current(self.value * other)
+            self.value *= other
         return self
 
     def __truediv__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value / other.get_current()
+            return self.value / other.value
         else:
-            return self.__interpolating_value / other
+            return self.value / other
 
     def __itruediv__(self, other):
         if isinstance(other, Animated):
-            self.set_current(self.value / other.get_current())
+            self.value /= other.value
         else:
-            self.set_current(self.value / other)
+            self.value /= other
         return self
 
     def __lt__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value < other.get_current()
+            return self.value < other.value
         else:
-            return self.__interpolating_value < other
+            return self.value < other
 
     def __le__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value <= other.get_current()
+            return self.value <= other.value
         else:
-            return self.__interpolating_value <= other
+            return self.value <= other
 
     def __gt__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value > other.get_current()
+            return self.value > other.value
         else:
-            return self.__interpolating_value > other
+            return self.value > other
 
     def __ge__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value >= other.get_current()
+            return self.value >= other.value
         else:
-            return self.__interpolating_value >= other
+            return self.value >= other
 
     def __eq__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value == other.get_current()
+            return self.value == other.value
         else:
-            return self.__interpolating_value == other
+            return self.value == other
 
     def __ne__(self, other):
         if isinstance(other, Animated):
-            return self.__interpolating_value != other.get_current()
+            return self.value != other.value
         else:
-            return self.__interpolating_value != other
+            return self.value != other
 
     def __repr__(self) -> str:
         return f'Animated with old_value = {self.__interpolating_value} and value = {self.value}'

@@ -11,5 +11,5 @@ from src.watcher import *
 
 def animated_or(value):
     if isinstance(value,Animated):
-        return value.get_current()
+        return value.value
     return value
