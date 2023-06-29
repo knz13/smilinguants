@@ -9,7 +9,3 @@ from events import Events
 from src.animated import *
 from src.watcher import *
 
-def animated_or(value):
-    if isinstance(value,Animated):
-        return value.value
-    return value

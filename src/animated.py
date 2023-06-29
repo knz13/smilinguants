@@ -133,7 +133,13 @@ class Animated:
             return self.value != other
 
     def __repr__(self) -> str:
-        return f'Animated with old_value = {self.__interpolating_value} and value = {self.value}'
+        return f'Animated with old_value = {self._interpolating_value} and value = {self.value}'
 
     def __del__(self):
         Animated.animated_list.remove(self)
+
+
+def animated_or(value):
+    if isinstance(value,Animated):
+        return value.value
+    return value
